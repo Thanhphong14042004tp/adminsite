@@ -11,7 +11,7 @@ router.post('/login', (req, res) => {
     const { username, password } = req.body;
 
     // Kiểm tra thông tin đăng nhập
-    if (username !== 'admin' || password !== '12345') {
+    if (username !== 'phong' || password !== '14042004') {
         req.flash('message', 'Thông tin đăng nhập không chính xác');
         return res.redirect('/login');  // Quay lại trang login với thông báo
     }

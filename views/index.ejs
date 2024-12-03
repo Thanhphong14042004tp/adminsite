@@ -1,10 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Home</title>
+  <meta charset="UTF-8">
+  <title>Danh Sách Chuyến Đi</title>
+  <style>
+    /* Reset các margin và padding */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f7fc;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      width: 80%;
+      margin: 30px auto;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: white;
+      margin: 15px 0;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+    }
+
+    li a {
+      margin-left: 10px;
+      background-color: #28a745;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    li a:hover {
+      background-color: #218838;
+    }
+
+    button {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #c82333;
+    }
+
+    .add-trip {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 18px;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-trip:hover {
+      background-color: #218838;
+    }
+
+  </style>
 </head>
 <body>
-  <h1>Welcome to the Trip App</h1>
-  <a href="/logout">Logout</a>
+
+  <header>
+    <h1>Danh Sách Chuyến Đi</h1>
+  </header>
+
+  <div class="container">
+    <a href="/trips/add" class="add-trip">Thêm Chuyến Đi</a>
+
+    <ul>
+      <% trips.forEach(function(trip) { %>
+        <li>
+          <div>
+            <strong><%= trip.name %></strong> - <%= trip.from %> đến <%= trip.to %> vào <%= trip.departureTime %>
+          </div>
+          <div>
+            <a href="/trips/edit/<%= trip._id %>">Sửa</a> |
+            <a href="/trips/delete/<%= trip._id %>">Xóa</a>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+
 </body>
 </html>

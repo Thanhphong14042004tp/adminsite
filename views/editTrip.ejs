@@ -1,14 +1,124 @@
-<!-- views/editTrip.ejs -->
-<h1>Sửa chuyến tàu</h1>
-<form action="/trips/edit/<%= trip._id %>" method="POST">
-  <label for="name">Tên chuyến tàu:</label>
-  <input type="text" name="name" value="<%= trip.name %>" required>
-  
-  <label for="date">Ngày khởi hành:</label>
-  <input type="date" name="date" value="<%= trip.date %>" required>
-  
-  <label for="destination">Điểm đến:</label>
-  <input type="text" name="destination" value="<%= trip.destination %>" required>
-  
-  <button type="submit">Cập nhật chuyến tàu</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sửa Chuyến Đi</title>
+  <style>
+    /* Reset các margin và padding */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f7fc;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      color: #007bff;
+      margin-bottom: 30px;
+    }
+
+    .form-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    input[type="text"], input[type="datetime-local"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      background-color: #f9f9f9;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus, input[type="datetime-local"]:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    /* Thêm hiệu ứng khi hover */
+    input[type="text"]:hover, input[type="datetime-local"]:hover {
+      border-color: #007bff;
+    }
+
+    .form-footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .form-footer a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Sửa Chuyến Đi</h1>
+    <form action="/trips/edit/<%= trip._id %>" method="POST">
+      <label for="name">Tên Chuyến Đi:</label>
+      <input type="text" id="name" name="name" value="<%= trip.name %>" required><br>
+
+      <label for="from">Điểm Xuất Phát:</label>
+      <input type="text" id="from" name="from" value="<%= trip.from %>" required><br>
+
+      <label for="to">Điểm Đến:</label>
+      <input type="text" id="to" name="to" value="<%= trip.to %>" required><br>
+
+      <label for="departureTime">Thời Gian Khởi Hành:</label>
+      <input type="datetime-local" id="departureTime" name="departureTime" value="<%= trip.departureTime.toISOString().slice(0, 16) %>" required><br>
+
+      <button type="submit">Cập nhật Chuyến Đi</button>
+    </form>
+    <div class="form-footer">
+      <p>Quay lại <a href="/trips">Danh sách Chuyến Đi</a></p>
+    </div>
+  </div>
+</body>
+</html>

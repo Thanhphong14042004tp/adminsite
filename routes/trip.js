@@ -1,40 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const Trip = require('../models/trips');  // Đảm bảo đường dẫn đúng
+const tripsController = require('../Controllers/trips_controller');
 
-// Route GET danh sách chuyến tàu
-router.get('/', async (req, res) => {
-    try {
-        const trips = await Trip.find();  // Lấy tất cả chuyến tàu từ MongoDB
-        res.render('trip', { trips: trips });  // Gửi dữ liệu chuyến tàu vào view
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Lỗi khi lấy dữ liệu chuyến tàu');
-    }
-});
+// Route để hiển thị tất cả chuyến đi
+router.get('/', tripsController.getAllTrips);
 
-// Route POST thêm chuyến tàu
-router.post('/add', async (req, res) => {
-    try {
-        const { name, from, to, departureTime } = req.body;
+// Route để thêm chuyến đi mới
+router.get('/add', tripsController.addTripForm);
+router.post('/add', tripsController.addTrip);
 
-        // Tạo mới một chuyến tàu
-        const newTrip = new Trip({
-            name,
-            from,
-            to,
-            departureTime
-        });
+// Route để chỉnh sửa chuyến đi
+router.get('/edit/:id', tripsController.editTripForm);
+router.post('/edit/:id', tripsController.editTrip);
 
-        // Lưu chuyến tàu vào MongoDB
-        await newTrip.save();
-
-        // Sau khi thêm thành công, chuyển hướng về trang danh sách chuyến tàu
-        res.redirect('/trips');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Lỗi khi thêm chuyến tàu');
-    }
-});
+// Route để xóa chuyến đi
+router.get('/delete/:id', tripsController.deleteTrip);
 
 module.exports = router;

@@ -1,65 +1,74 @@
-// controllers/trips_controller.js
-const Trip = require('../models/trips'); // Mô hình trip từ thư mục models
+const Trip = require('../models/trips'); // Giả sử bạn có model Trip
 
-// Hiển thị tất cả chuyến tàu
-exports.getTrips = async (req, res) => {
+// Lấy tất cả chuyến đi
+exports.getAllTrips = async (req, res) => {
   try {
     const trips = await Trip.find();
-    res.render('trip', { trips: trips });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Lỗi khi lấy dữ liệu chuyến tàu');
+    res.render('index', { trips }); // Giả sử bạn có view index.ejs để hiển thị danh sách chuyến đi
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error fetching trips');
   }
 };
 
-// Hiển thị form thêm chuyến tàu
+// Form thêm chuyến đi
 exports.addTripForm = (req, res) => {
-  res.render('addTrip');
+  res.render('addTrip'); // Hiển thị form thêm chuyến đi
 };
 
-// Thêm chuyến tàu mới
+// Thêm chuyến đi mới
 exports.addTrip = async (req, res) => {
-  const { name, date, destination } = req.body;
+  const { name, from, to, departureTime } = req.body;
   try {
-    const newTrip = new Trip({ name, date, destination });
+    const newTrip = new Trip({ name, from, to, departureTime });
     await newTrip.save();
-    res.redirect('/trips'); // Quay lại trang danh sách chuyến tàu
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Lỗi khi thêm chuyến tàu');
+    req.flash('success', 'Chuyến đi đã được thêm thành công!');
+    res.redirect('/trips');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error adding trip');
   }
 };
 
-// Hiển thị form sửa chuyến tàu
+// Form sửa chuyến đi
 exports.editTripForm = async (req, res) => {
+  const tripId = req.params.id;
   try {
-    const trip = await Trip.findById(req.params.id);
-    res.render('editTrip', { trip: trip });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Lỗi khi lấy chuyến tàu để sửa');
+    const trip = await Trip.findById(tripId);
+    if (!trip) {
+      req.flash('error', 'Chuyến đi không tồn tại');
+      return res.redirect('/trips');
+    }
+    res.render('editTrip', { trip }); // Hiển thị form sửa chuyến đi
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error fetching trip details');
   }
 };
 
-// Cập nhật chuyến tàu
-exports.updateTrip = async (req, res) => {
-  const { name, date, destination } = req.body;
+// Cập nhật chuyến đi
+exports.editTrip = async (req, res) => {
+  const tripId = req.params.id;
+  const { name, from, to, departureTime } = req.body;
   try {
-    await Trip.findByIdAndUpdate(req.params.id, { name, date, destination });
+    await Trip.findByIdAndUpdate(tripId, { name, from, to, departureTime });
+    req.flash('success', 'Chuyến đi đã được cập nhật!');
     res.redirect('/trips');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Lỗi khi cập nhật chuyến tàu');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error updating trip');
   }
 };
 
-// Xóa chuyến tàu
+// Xóa chuyến đi
 exports.deleteTrip = async (req, res) => {
+  const tripId = req.params.id;
   try {
-    await Trip.findByIdAndDelete(req.params.id);
+    await Trip.findByIdAndDelete(tripId);
+    req.flash('success', 'Chuyến đi đã được xóa!');
     res.redirect('/trips');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Lỗi khi xóa chuyến tàu');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error deleting trip');
   }
 };
